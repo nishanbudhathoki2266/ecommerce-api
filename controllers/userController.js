@@ -1,22 +1,5 @@
+const catchAsync = require('./../utils/catchAsync');
 
-exports.getAllUsers = (req, res, next) => {
-    res.status(200).json({
-        message: "SUCCESS"
-    })
-}
+exports.getAllUsers = catchAsync(async (req, res, next) => {
 
-exports.createUser = (req, res, next) => {
-    res.status(200).json({
-        message: "SUCCESS"
-    })
-}
-exports.getUser = (req, res, next) => {
-    res.status(200).json({
-        message: "SUCCESS"
-    })
-}
-exports.deleteUser = (req, res, next) => {
-    res.status(200).json({
-        message: "SUCCESS"
-    })
-}
+})
