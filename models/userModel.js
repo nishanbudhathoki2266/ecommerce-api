@@ -71,6 +71,16 @@ userSchema.pre('save', async function (next) {
     next();
 })
 
+userSchema.pre(/^find/, function (next) {
+    this.find({ active: { $ne: false } });
+    next();
+})
+
+// Instance method
+userSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
+    return await bcrypt.compare(candidatePassword, userPassword);
+}
+
 
 const User = mongoose.model('User', userSchema);
 
