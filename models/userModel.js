@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -37,6 +38,9 @@ const userSchema = new mongoose.Schema({
             message: "Passwords aren't matching!"
         }
     },
+    passwordChangedAt: Date,
+    passwordResetToken: String,
+    passwordResetExpires: Date,
     active: {
         type: Boolean,
         default: true,
@@ -47,6 +51,26 @@ const userSchema = new mongoose.Schema({
         toJSON: { virtuals: true },
         toObject: { virtuals: true },
     })
+
+userSchema.pre('save', function (next) {
+    if (!this.isModified('password') || this.isNew) return next();
+
+    this.passwordChangedAt = Date.now() - 1000;
+    next();
+})
+
+userSchema.pre('save', async function (next) {
+    // we only want the password to be bcrypted if the password was changed or entered 
+    if (!this.isModified('password')) return next();
+
+    this.password = await bcrypt.hash(this.password, 12);
+
+    // deleting a field cause it is not meant to be persisted in the database
+    this.passwordConfirm = undefined;
+
+    next();
+})
+
 
 const User = mongoose.model('User', userSchema);
 
