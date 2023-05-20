@@ -76,10 +76,23 @@ userSchema.pre(/^find/, function (next) {
     next();
 })
 
-// Instance method
+// Instance method to check the entered password and the database password
 userSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
     return await bcrypt.compare(candidatePassword, userPassword);
 }
+
+// Instance method to find if the user has changed the password after the JWT token was issued
+userSchema.methods.changedPasswordAfter = function (JWTTimeStamp) {
+    if (this.passwordChangedAt) {
+        const changedTimeStamp = parseInt(this.passwordChangedAt.getTime() / 1000, 10);
+
+        console.log(changedTimeStamp, JWTTimeStamp);
+        return JWTTimeStamp < changedTimeStamp;
+
+    }
+    return false;
+}
+
 
 
 const User = mongoose.model('User', userSchema);
