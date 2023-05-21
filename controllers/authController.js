@@ -106,7 +106,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     // Send the token to the user's mail
     const resetURL = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
 
-    const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to ${resetURL}.\nIf you didn't forget your password. Simply ignore this mail!`;
+    const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to ${resetURL}\nIf you didn't forget your password. Simply ignore this mail!`;
 
     try {
         await sendEmail({
@@ -128,4 +128,22 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
         return next(new AppError("There was an error sending the email. Try again later!", err), 500)
     }
+})
+
+exports.resetPassword = catchAsync(async (req, res, next) => {
+
+    const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
+
+    // Getting the user based on hashed token and also the token must have life less than 10 minutes
+    const user = await User.findOne({ passwordResetToken: hashedToken, passwordResetExpires: { $gt: Date.now() } })
+
+    if (!user) return next(new AppError("Invalid or expired token!", 400));
+
+    user.password = req.body.password;
+    user.passwordConfirm = req.body.passwordConfirm;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save();
+
+    createAndSendToken(user, 200, res);
 })
