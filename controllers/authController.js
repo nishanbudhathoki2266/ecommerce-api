@@ -150,7 +150,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
 exports.updateMyPassword = catchAsync(async (req, res, next) => {
     // getting user based on the user that was saved in the request from protect route 
-    const user = User.findById(req.user.id).select('+password');
+    const user = await User.findById(req.user.id).select('+password');
 
     if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
         return next(new AppError("Current password didn't match!", 401))
