@@ -67,3 +67,15 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
     })
 })
 
+exports.getMe = catchAsync(async (req, res, next) => {
+    const user = await User.findById(req.user.id);
+
+    if (!user) return next(new AppError("Looks like you aren't logged in!", 404))
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            user
+        }
+    })
+})
