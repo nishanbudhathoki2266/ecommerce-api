@@ -22,6 +22,9 @@ const bannerSchema = mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'User'
     }
+}, {
+    timestamps: true,
+    autoIndex: true
 })
 
 
