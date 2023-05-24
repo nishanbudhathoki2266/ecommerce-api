@@ -4,7 +4,21 @@ const AppError = require('./../utils/appError');
 const catchAsync = require('./../utils/catchAsync');
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
-    const users = await User.find();
+
+    const queryObj = { ...req.query };
+
+    const excludedFields = ['page', 'sort', 'limit', 'fields'];
+
+    // Removing some extra fields from query string
+    for (const key of Object.keys(queryObj)) {
+        if (excludedFields.includes(key)) {
+            delete queryObj[key];
+        }
+    }
+
+    const query = User.find(queryObj);
+
+    const users = await query;
 
     // Send response 
     res.status(200).json({
