@@ -43,6 +43,13 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
         query = query.select('-__v');
     }
 
+    // Pagination
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 100;
+    const skip = (page - 1) * limit;
+
+    query = query.skip(skip).limit(limit);
+
     const users = await query;
 
     // Send response 
