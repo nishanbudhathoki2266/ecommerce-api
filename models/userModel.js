@@ -23,6 +23,11 @@ const userSchema = new mongoose.Schema({
         enum: ['customer', 'seller', 'admin'],
         default: 'customer'
     },
+    createdAt: {
+        type: Date,
+        default: Date.now(),
+        select: false
+    },
     password: {
         type: String,
         required: [true, "Please provide a password!"],
