@@ -16,7 +16,12 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
         }
     }
 
-    const query = User.find(queryObj);
+    let queryStr = JSON.stringify(queryObj);
+    queryStr = queryStr.replace(
+        /\b(gte|gt|lte|lt)\b/g,
+        (match) => `$${match}`);
+
+    let query = User.find(JSON.parse(queryStr));
 
     const users = await query;
 
