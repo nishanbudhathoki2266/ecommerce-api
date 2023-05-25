@@ -1,7 +1,11 @@
 const express = require('express');
+const multer = require('multer');
 
 const userController = require('./../controllers/userController');
 const authController = require('./../controllers/authController');
+
+// if not given the dest option, the file would be just saved on memory
+const upload = multer({ dest: 'public/img/users' });
 
 const router = express.Router();
 
@@ -16,6 +20,8 @@ router.use(authController.protect);
 
 router.patch('/updateMyPassword', authController.updateMyPassword);
 router.get('/me', userController.getMe);
+router.patch('/updateMe', userController.updateMe);
+
 
 authController.restrictTo('admin')
 
