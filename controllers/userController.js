@@ -109,3 +109,13 @@ exports.updateMe = catchAsync(async (req, res, next) => {
         }
     })
 })
+
+exports.deleteMe = catchAsync(async (req, res, next) => {
+    // setting the active flag of an user to false
+    const userToBeDeleted = await User.findByIdAndUpdate(req.user.id, { active: false })
+
+    res.status(204).json({
+        status: 'success',
+        data: null
+    })
+})
