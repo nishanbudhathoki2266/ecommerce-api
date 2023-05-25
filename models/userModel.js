@@ -20,7 +20,10 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['customer', 'seller', 'admin'],
+        enum: {
+            values: ['customer', 'seller', 'admin'],
+            message: "The user must be either seller, customer or admin!"
+        },
         default: 'customer'
     },
     createdAt: {

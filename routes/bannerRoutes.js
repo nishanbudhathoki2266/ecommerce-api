@@ -7,7 +7,7 @@ const bannerController = require('./../controllers/bannerController');
 
 const router = express.Router();
 
-router.use(authController.protect, authController.restrictTo('admin'))
+router.use(authController.protect, authController.restrictTo('admin'));
 
 router.route('/').get(bannerController.getAllBanners).post(bannerController.createBanner);
 router.route('/:id').get(bannerController.getBanner).patch(bannerController.updateBanner).delete(bannerController.deleteBanner);
