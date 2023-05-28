@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.use(authController.protect, authController.restrictTo('admin'));
 
-router.route('/').get(bannerController.getAllBanners).post(bannerController.createBanner);
+router.route('/').get(bannerController.getAllBanners).post(bannerController.uploadBannerPhoto, bannerController.resizeBannerPhoto, bannerController.createBanner);
 router.route('/:id').get(bannerController.getBanner).patch(bannerController.updateBanner).delete(bannerController.deleteBanner);
 router.route('/banners').get(bannerController.getBannersForHomePage);
 

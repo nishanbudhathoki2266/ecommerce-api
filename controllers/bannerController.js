@@ -32,6 +32,9 @@ exports.resizeBannerPhoto = async (req, _, next) => {
 
     // 988 x 344 Banner Size
     await sharp(req.file.buffer).resize(988, 344).toFormat('jpeg').toFile(`public/img/banners/${req.file.filename}`);
+
+    // Never forget to pass the request to next middelware - Remeber you just got lost for 1 hour due to this last Monday :D 
+    next();
 }
 
 exports.getAllBanners = catchAsync(async (req, res, next) => {
@@ -66,7 +69,14 @@ exports.getBanner = catchAsync(async (req, res, next) => {
 })
 
 exports.createBanner = catchAsync(async (req, res, next) => {
+    const newBanner = await Banner.create({ ...req.body, photo: req.file.filename });
 
+    res.status(201).json({
+        status: 'success',
+        data: {
+            banner: newBanner,
+        }
+    })
 })
 
 exports.updateBanner = catchAsync(async (req, res, next) => {

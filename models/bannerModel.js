@@ -16,7 +16,8 @@ const bannerSchema = mongoose.Schema({
         enum: {
             values: ['active', 'inactive'],
             message: "The banner status must be either active or inactive!"
-        }
+        },
+        default: 'active'
     },
     createdBy: {
         type: mongoose.Schema.ObjectId,
