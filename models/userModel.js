@@ -58,6 +58,8 @@ const userSchema = new mongoose.Schema({
     },
 },
     {
+        timestamps: true,
+        autoIndex: true,
         toJSON: { virtuals: true },
         toObject: { virtuals: true },
     })
