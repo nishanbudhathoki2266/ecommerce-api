@@ -52,7 +52,8 @@ exports.getAllBanners = catchAsync(async (req, res, next) => {
 })
 
 exports.getBannersForHomePage = catchAsync(async (req, res, next) => {
-    const banners = await Banner.find({ status: { $ne: 'inactive' } });
+    const features = new APIFeatures(Banner.find({ status: { $ne: 'inactive' } }), req.query).filter().limitFields().pagniate().sort();
+    const banners = await features.query;
 
     res.status(200).json({
         status: 'success',
