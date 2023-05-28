@@ -81,7 +81,17 @@ exports.createBanner = catchAsync(async (req, res, next) => {
 })
 
 exports.updateBanner = catchAsync(async (req, res, next) => {
+    const requestBody = req.file ? { ...req.body, photo: req.file.filename } : req.body;
+    const banner = await Banner.findByIdAndUpdate(req.params.id, requestBody, { new: true, runValidators: true });
 
+    if (!banner) return next(new AppError("No banner found with that ID!, 404"));
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            banner
+        }
+    })
 })
 
 exports.deleteBanner = catchAsync(async (req, res, next) => {
