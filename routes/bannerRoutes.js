@@ -7,10 +7,11 @@ const bannerController = require('./../controllers/bannerController');
 
 const router = express.Router();
 
+router.route('/active-banners').get(bannerController.getBannersForHomePage);
+
 router.use(authController.protect, authController.restrictTo('admin'));
 
 router.route('/').get(bannerController.getAllBanners).post(bannerController.uploadBannerPhoto, bannerController.resizeBannerPhoto, bannerController.createBanner);
 router.route('/:id').get(bannerController.getBanner).patch(bannerController.uploadBannerPhoto, bannerController.resizeBannerPhoto, bannerController.updateBanner).delete(bannerController.deleteBanner);
-router.route('/banners').get(bannerController.getBannersForHomePage);
 
 module.exports = router;

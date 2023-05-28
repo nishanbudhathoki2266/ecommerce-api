@@ -52,7 +52,15 @@ exports.getAllBanners = catchAsync(async (req, res, next) => {
 })
 
 exports.getBannersForHomePage = catchAsync(async (req, res, next) => {
+    const banners = await Banner.find({ status: { $ne: 'inactive' } });
 
+    res.status(200).json({
+        status: 'success',
+        result: banners.length,
+        data: {
+            banners
+        }
+    })
 })
 
 exports.getBanner = catchAsync(async (req, res, next) => {
