@@ -31,6 +31,15 @@ const categorySchema = mongoose.Schema({
     autoIndex: true,
 })
 
+categorySchema.pre(/^find/, function (next) {
+    this.populate({
+        path: 'createdBy',
+        select: 'name email'
+    })
+
+    next();
+})
+
 const Category = mongoose.model('Category', categorySchema);
 
 module.exports = Category;
