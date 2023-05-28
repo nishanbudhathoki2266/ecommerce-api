@@ -69,6 +69,7 @@ exports.getBanner = catchAsync(async (req, res, next) => {
 })
 
 exports.createBanner = catchAsync(async (req, res, next) => {
+    if (!req.body.createdBy) req.body.createdBy = req.user.id;
     const newBanner = await Banner.create({ ...req.body, photo: req.file.filename });
 
     res.status(201).json({
