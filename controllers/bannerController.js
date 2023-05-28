@@ -1,7 +1,10 @@
 const multer = require('multer');
 const sharp = require('sharp');
+
+const Banner = require('./../models/bannerModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
+const APIFeatures = require('../utils/apiFeatures');
 
 const multerStorage = multer.memoryStorage();
 
@@ -32,7 +35,17 @@ exports.resizeBannerPhoto = async (req, _, next) => {
 }
 
 exports.getAllBanners = catchAsync(async (req, res, next) => {
+    const features = new APIFeatures(Banner.find(), req.query).filter().limitFields().pagniate().sort();
+    const banners = await features.query;
 
+    // response
+    res.status(200).json({
+        status: 'success',
+        results: banners.length,
+        data: {
+            banners
+        }
+    })
 })
 
 exports.getBannersForHomePage = catchAsync(async (req, res, next) => {
