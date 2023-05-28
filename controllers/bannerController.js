@@ -74,6 +74,13 @@ exports.updateBanner = catchAsync(async (req, res, next) => {
 })
 
 exports.deleteBanner = catchAsync(async (req, res, next) => {
+    const banner = await Banner.findByIdAndDelete(req.params.id);
 
+    if (!banner) return next(new AppError("No banner found with that ID!, 404"));
+
+    res.status(204).json({
+        status: 'success',
+        data: null
+    })
 })
 
