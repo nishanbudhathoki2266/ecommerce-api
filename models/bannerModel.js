@@ -30,6 +30,14 @@ const bannerSchema = mongoose.Schema({
     toObject: { virtuals: true },
 })
 
+bannerSchema.pre(/^find/, function (next) {
+    this.populate({
+        path: 'createdBy',
+        select: 'name email'
+    })
+
+    next();
+})
 
 const Banner = mongoose.model('Banner', bannerSchema);
 
