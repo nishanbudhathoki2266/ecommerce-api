@@ -31,7 +31,7 @@ exports.resizeBannerPhoto = async (req, _, next) => {
     req.file.filename = `Banner-${req.user.id}-${Date.now()}.jpeg`;
 
     // 988 x 344 Banner Size
-    await sharp(req.file.buffer).toFormat('jpeg').toFile(`public/img/banners/${req.file.filename}`);
+    await sharp(req.file.buffer).toFormat('jpeg').jpeg({ quality: 90 }).toFile(`public/img/banners/${req.file.filename}`);
 
     // Never forget to pass the request to next middelware - Remeber you just got lost for 1 hour due to this last Monday :D 
     next();
