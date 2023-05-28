@@ -53,7 +53,16 @@ exports.getBannersForHomePage = catchAsync(async (req, res, next) => {
 })
 
 exports.getBanner = catchAsync(async (req, res, next) => {
+    const banner = await Banner.findById(req.params.id);
 
+    if (!banner) return next(new AppError("No banner found with that ID!, 404"));
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            banner
+        }
+    })
 })
 
 exports.createBanner = catchAsync(async (req, res, next) => {
