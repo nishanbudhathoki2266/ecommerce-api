@@ -59,7 +59,6 @@ const productSchema = new mongoose.Schema({
 
 productSchema.pre('save', async function (next) {
     let createdSlug = slugify(this.name, { lower: true });
-    console.log(typeof createdSlug, createdSlug);
     this.slug = await this.constructor.findOne({ slug: createdSlug }) ? slugify(`${this.name} ${this.createdBy} ${Date.now()}`, { lower: true }) :
         createdSlug;
     next();

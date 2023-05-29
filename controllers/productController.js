@@ -1,8 +1,12 @@
-
 const Product = require('./../models/productModel');
+const multer = require('multer');
+const sharp = require('sharp');
+
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const APIFeatures = require('../utils/apiFeatures');
+
+// 720 x 720 product image size
 
 exports.getAllProducts = catchAsync(async (req, res, next) => {
     const features = new APIFeatures(Product.find(), req.query).filter().limitFields().pagniate().sort();
