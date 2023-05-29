@@ -33,10 +33,7 @@ const productSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
-    photos: {
-        type: [String],
-        default: []
-    },
+    images: [String],
     attributes: [{
         name: {
             type: String,

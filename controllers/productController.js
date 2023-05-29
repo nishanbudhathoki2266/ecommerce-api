@@ -7,6 +7,29 @@ const AppError = require('./../utils/appError');
 const APIFeatures = require('../utils/apiFeatures');
 
 // 720 x 720 product image size
+const multerStorage = multer.memoryStorage();
+
+const multerFilter = (req, file, cb) => {
+    if (file.mimetype.startsWith('image')) {
+        cb(null, true);
+    }
+    else {
+        cb(new AppError('Not an image! Please upload only images!', 400), false);
+    }
+}
+
+const upload = multer({
+    storage: multerStorage,
+    fileFilter: multerFilter
+})
+
+// Setting max count of images to 5
+exports.uploadProductImages = upload.array('images', 5);
+
+exports.resizeProductImages = (req, res, next) => {
+    console.log(req.files);
+    next();
+}
 
 exports.getAllProducts = catchAsync(async (req, res, next) => {
     const features = new APIFeatures(Product.find(), req.query).filter().limitFields().pagniate().sort();
