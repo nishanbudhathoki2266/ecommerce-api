@@ -6,7 +6,9 @@ const globalErrorHandler = require('./controllers/errorController');
 const bannerRouter = require('./routes/bannerRoutes');
 const categoryRouter = require('./routes/categoryRoutes');
 const brandRouter = require('./routes/brandRoutes');
+const productRouter = require('./routes/productRoutes');
 const userRouter = require('./routes/userRoutes');
+
 
 
 const app = express();
@@ -19,8 +21,9 @@ app.use(express.json({ limit: '10kb' }));
 app.use(express.static(`${__dirname}/public`));
 
 app.use('/api/v1/banners', bannerRouter);
-app.use('/api/v1/categories', categoryRouter);
 app.use('/api/v1/brands', brandRouter);
+app.use('/api/v1/categories', categoryRouter);
+app.use('/api/v1/products', productRouter);
 app.use('/api/v1/users', userRouter);
 
 app.use('*', (req, res, next) => {

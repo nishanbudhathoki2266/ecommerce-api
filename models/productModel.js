@@ -1,53 +1,70 @@
-// const mongoose = require('mongoose');
+const mongoose = require('mongoose');
+const slugify = require('slugify');
 
-// const productSchema = new mongoose.Schema({
-//     name: {
-//         type: String,
-//         required: true
-//     },
-//     description: {
-//         type: String,
-//         required: true
-//     },
-//     price: {
-//         type: Number,
-//         required: true
-//     },
-//     category: {
-//         type: mongoose.Schema.Types.ObjectId,
-//         ref: 'Category',
-//         required: true
-//     },
-//     brand: {
-//         type: mongoose.Schema.Types.ObjectId,
-//         ref: 'Brand',
-//         required: true
-//     },
-//     vendor: {
-//         type: mongoose.Schema.Types.ObjectId,
-//         ref: 'Vendor',
-//         required: true
-//     },
-//     images: {
-//         type: [String],
-//         default: []
-//     },
-//     attributes: [{
-//         name: {
-//             type: String,
-//             required: true
-//         },
-//         value: {
-//             type: String,
-//             required: true
-//         }
-//     }],
-//     createdAt: {
-//         type: Date,
-//         default: Date.now
-//     }
-// });
+const productSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    slug: {
+        type: String,
+        unique: true,
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    price: {
+        type: Number,
+        required: true
+    },
+    categories: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'Category',
+        required: true
+    }],
+    brand: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Brand',
+        required: true
+    },
+    seller: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    photos: {
+        type: [String],
+        default: []
+    },
+    attributes: [{
+        name: {
+            type: String,
+            required: true
+        },
+        value: {
+            type: String,
+            required: true
+        }
+    }],
+    createdBy: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+        required: true
+    }
+}, {
+    timestamps: true,
+    autoIndex: true
+});
 
-// const Product = mongoose.model('Product', productSchema);
+productSchema.pre('save', async function (next) {
+    let createdSlug = slugify(this.name, { lower: true });
+    console.log(typeof createdSlug, createdSlug);
+    this.slug = await this.constructor.findOne({ slug: createdSlug }) ? slugify(`${this.name} ${this.createdBy} ${Date.now()}`, { lower: true }) :
+        createdSlug;
+    next();
+})
 
-// module.exports = Product;
+const Product = mongoose.model('Product', productSchema);
+
+module.exports = Product;
