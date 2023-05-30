@@ -4,7 +4,7 @@ const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const APIFeatures = require('./../utils/apiFeatures');
 
-exports.getAllReveiws = catchAsync(async (req, res, next) => {
+exports.getAllReviews = catchAsync(async (req, res, next) => {
 
     const features = new APIFeatures(Review.find(), req.query).filter().limitFields().pagniate().sort();
     const reviews = await features.query;
