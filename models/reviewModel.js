@@ -32,13 +32,6 @@ reviewSchema.index({ product: 1, user: 1 }, { unique: true });
 
 // Populating the product and user field while querying
 reviewSchema.pre(/^find/, function (next) {
-    // this.populate({
-    //     path: 'product',
-    //     select: 'name'
-    // }).populate({
-    //     path: 'user',
-    //     select: 'name photo'
-    // })
     this.populate({
         path: 'user',
         select: 'name photo'
