@@ -26,10 +26,10 @@ const upload = multer({
 // Setting max count of images to 5
 exports.uploadProductImages = upload.array('images', 5);
 
-exports.resizeProductImages = (req, res, next) => {
+exports.resizeProductImages = catchAsync(async (req, res, next) => {
     console.log(req.files);
     next();
-}
+})
 
 exports.getAllProducts = catchAsync(async (req, res, next) => {
     const features = new APIFeatures(Product.find(), req.query).filter().limitFields().pagniate().sort();

@@ -24,7 +24,7 @@ const upload = multer({
 
 exports.uploadBannerPhoto = upload.single('photo');
 
-exports.resizeBannerPhoto = async (req, _, next) => {
+exports.resizeBannerPhoto = catchAsync(async (req, _, next) => {
     if (!req.file) return next();
 
     // As the file is currently a buffer, we don't have any filename in request
@@ -35,7 +35,7 @@ exports.resizeBannerPhoto = async (req, _, next) => {
 
     // Never forget to pass the request to next middelware - Remeber you just got lost for 1 hour due to this last Monday :D 
     next();
-}
+})
 
 exports.getAllBanners = catchAsync(async (req, res, next) => {
     const features = new APIFeatures(Banner.find(), req.query).filter().limitFields().pagniate().sort();
