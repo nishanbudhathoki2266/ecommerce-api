@@ -28,7 +28,7 @@ const reviewSchema = mongoose.Schema({
 })
 
 // Preventing duplicate reviews from a user for a product
-reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
+reviewSchema.index({ product: 1, user: 1 }, { unique: true });
 
 // Populating the product and user field while querying
 reviewSchema.pre(/^find/, function (next) {
