@@ -51,8 +51,17 @@ const productSchema = new mongoose.Schema({
     }
 }, {
     timestamps: true,
-    autoIndex: true
+    autoIndex: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
 });
+
+// Virtual populate
+productSchema.virtual('reviews', {
+    ref: 'Review',
+    foreignField: 'product',
+    localField: '_id'
+})
 
 productSchema.pre('save', async function (next) {
     let createdSlug = slugify(this.name, { lower: true });
