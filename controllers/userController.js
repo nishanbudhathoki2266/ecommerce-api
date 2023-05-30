@@ -34,13 +34,13 @@ const upload = multer({
 });
 
 // Resize user photos 
-exports.resizeUserPhoto = (req, res, next) => {
+exports.resizeUserPhoto = async (req, res, next) => {
     // If the file wasn't uploaded just go to the next middleware in the stack 
     if (!req.file) return next();
 
     req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
 
-    sharp(req.file.buffer).resize(500, 500).toFormat('jpeg').jpeg({ quality: 90 }).toFile(`public/img/users/${req.file.filename}`);
+    await sharp(req.file.buffer).resize(500, 500).toFormat('jpeg').jpeg({ quality: 90 }).toFile(`public/img/users/${req.file.filename}`);
 
     next();
 }

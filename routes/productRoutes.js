@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.use(authController.protect, authController.restrictTo('admin'));
 
-router.route('/').get(productController.getAllProducts).post(productController.createProduct, productController.uploadProductImages, productController.resizeProductImages);
-// router.route('/:id').get(bannerController.getBanner).patch(bannerController.uploadBannerPhoto, bannerController.resizeBannerPhoto, bannerController.updateBanner).delete(bannerController.deleteBanner);
+router.route('/').get(productController.getAllProducts).post(productController.uploadProductImages, productController.resizeProductImages, productController.createProduct);
+router.route('/:id').patch(productController.uploadProductImages, productController.resizeProductImages, productController.updateProduct)//.delete(bannerController.deleteBanner);
 
 module.exports = router;
