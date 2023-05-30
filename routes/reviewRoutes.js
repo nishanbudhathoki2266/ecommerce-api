@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.use(authController.protect);
 
-router.route('/').get(reviewController.getAllReviews).post(authController.restrictTo('user'), reviewController.createReview);
-router.route('/:id').get(reviewController.getReview).patch(authController.restrictTo('user', 'admin'), reviewController.updateReview).delete(authController.restrictTo('user', 'admin'), reviewController.deleteReview)
+router.route('/').get(reviewController.getAllReviews).post(authController.restrictTo('customer'), reviewController.createReview);
+router.route('/:id').get(reviewController.getReview).patch(authController.restrictTo('customer', 'admin'), reviewController.updateReview).delete(authController.restrictTo('customer', 'admin'), reviewController.deleteReview)
 
 module.exports = router;
