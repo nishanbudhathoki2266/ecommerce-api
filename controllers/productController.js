@@ -55,18 +55,18 @@ exports.getAllProducts = catchAsync(async (req, res, next) => {
     })
 })
 
-// exports.getCategory = catchAsync(async (req, res, next) => {
-//     const category = await Category.findById(req.params.id);
+exports.getProduct = catchAsync(async (req, res, next) => {
+    const product = await Product.findById(req.params.id);
 
-//     if (!category) return next(new AppError("No category found with that ID!, 404"));
+    if (!product) return next(new AppError("No product found with that ID!, 404"));
 
-//     res.status(200).json({
-//         status: 'success',
-//         data: {
-//             category
-//         }
-//     })
-// })
+    res.status(200).json({
+        status: 'success',
+        data: {
+            product
+        }
+    })
+})
 
 exports.createProduct = catchAsync(async (req, res, next) => {
 

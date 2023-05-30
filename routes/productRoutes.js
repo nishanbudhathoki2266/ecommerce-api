@@ -8,6 +8,6 @@ const router = express.Router();
 router.use(authController.protect, authController.restrictTo('admin'));
 
 router.route('/').get(productController.getAllProducts).post(productController.uploadProductImages, productController.resizeProductImages, productController.createProduct);
-router.route('/:id').patch(productController.uploadProductImages, productController.resizeProductImages, productController.updateProduct)//.delete(bannerController.deleteBanner);
+router.route('/:id').get(productController.getProduct).patch(productController.uploadProductImages, productController.resizeProductImages, productController.updateProduct)//.delete(bannerController.deleteBanner);
 
 module.exports = router;
