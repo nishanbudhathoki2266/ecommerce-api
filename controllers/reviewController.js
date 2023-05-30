@@ -6,7 +6,11 @@ const APIFeatures = require('./../utils/apiFeatures');
 
 exports.getAllReviews = catchAsync(async (req, res, next) => {
 
-    const features = new APIFeatures(Review.find(), req.query).filter().limitFields().pagniate().sort();
+    const filter = {};
+    if (req.params.productID) filter.product = req.params.productID;
+    console.log(filter);
+
+    const features = new APIFeatures(Review.find(filter), req.query).filter().limitFields().pagniate().sort();
     const reviews = await features.query;
 
     res.status(200).json({
