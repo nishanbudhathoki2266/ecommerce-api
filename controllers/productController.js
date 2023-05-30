@@ -105,14 +105,4 @@ exports.deleteProduct = catchAsync(async (req, res, next) => {
     })
 })
 
-// exports.deleteCategory = catchAsync(async (req, res, next) => {
-//     const category = await Category.findByIdAndDelete(req.params.id);
-
-//     if (!category) return next(new AppError("No category found with that ID!, 404"));
-
-//     res.status(204).json({
-//         status: 'success',
-//         data: null
-//     })
-// })
 
