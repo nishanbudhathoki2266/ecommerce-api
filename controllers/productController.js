@@ -31,7 +31,7 @@ exports.resizeProductImages = catchAsync(async (req, res, next) => {
 
     req.body.images = [];
     await Promise.all(req.files.map(async (file, i) => {
-        const filename = `product-${req.user.id}-${Date.now()}-${i + 1}.jpeg`
+        const filename = `product-${req.body.createdBy}-${Date.now()}-${i + 1}.jpeg`
 
         await sharp(file.buffer).resize(720, 720).toFormat('jpeg').jpeg({ quality: 90 }).toFile(`public/img/products/${filename}`);
 
@@ -69,7 +69,7 @@ exports.getProduct = catchAsync(async (req, res, next) => {
 })
 
 exports.createProduct = catchAsync(async (req, res, next) => {
-
+    if (!req.body.createdBy) req.body.createdBy = req.user.id;
     if (!req.body.createdBy) req.body.createdBy = req.user.id;
     const newProduct = await Product.create(req.body);
 
