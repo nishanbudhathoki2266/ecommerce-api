@@ -48,6 +48,9 @@ const userSchema = new mongoose.Schema({
             message: "Passwords aren't matching!"
         }
     },
+    address: {
+        type: String,
+    },
     passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,
