@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Product = require('./../models/productModel');
 
 const reviewSchema = mongoose.Schema({
     review: {
@@ -37,6 +38,34 @@ reviewSchema.pre(/^find/, function (next) {
         select: 'name photo'
     })
     next();
+})
+
+reviewSchema.statics.calcAverageRatings = async function (productId) {
+    // In static functions, this points to the current model
+    const stats = await this.aggregate([
+        {
+            $match: { product: productId }
+        },
+        {
+            $group: {
+                _id: '$product',
+                nRating: { $sum: 1 },
+                avgRating: { $avg: '$rating' },
+
+            }
+        }
+    ]);
+
+    await Product.findByIdAndUpdate(productId, {
+        ratingsQuantity: stats[0].nRating,
+        ratingsAverage: stats[0].avgRating
+    })
+}
+
+// Post middleware doesn't have access to next
+reviewSchema.post('save', function () {
+    // Here this points to current review -> and this.constructor points to the model
+    this.constructor.calcAverageRatings(this.product);
 })
 
 const Review = mongoose.model('Review', reviewSchema);

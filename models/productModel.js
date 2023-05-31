@@ -67,6 +67,12 @@ const productSchema = new mongoose.Schema({
     toObject: { virtuals: true }
 });
 
+// setting compund index for efficient querying by product's price and ratingsAverage
+productSchema.index({ price: 1, ratingsAverage: -1 });
+
+// Also creating an index for slug 
+productSchema.index({ slug: 1 });
+
 // Virtual populate
 productSchema.virtual('reviews', {
     ref: 'Review',
