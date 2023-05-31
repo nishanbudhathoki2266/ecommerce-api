@@ -57,8 +57,8 @@ reviewSchema.statics.calcAverageRatings = async function (productId) {
     ]);
 
     await Product.findByIdAndUpdate(productId, {
-        ratingsQuantity: stats[0].nRating,
-        ratingsAverage: stats[0].avgRating
+        ratingsQuantity: stats[0]?.nRating ? stats[0]?.nRating : 0,
+        ratingsAverage: stats[0]?.avgRating ? stats[0]?.avgRating : 1
     })
 }
 
@@ -66,6 +66,11 @@ reviewSchema.statics.calcAverageRatings = async function (productId) {
 reviewSchema.post('save', function () {
     // Here this points to current review -> and this.constructor points to the model
     this.constructor.calcAverageRatings(this.product);
+})
+
+reviewSchema.post(/^findOneAnd/, async function (doc) {
+    if (!doc) return;
+    await doc.constructor.calcAverageRatings(doc.product);
 })
 
 const Review = mongoose.model('Review', reviewSchema);
