@@ -8,6 +8,7 @@ const router = express.Router();
 
 router.use('/:productID/reviews', reviewRouter);
 
+router.get('/:slug', productController.getProductBySlug);
 router.route('/').get(productController.getAllProducts).post(authController.protect, authController.restrictTo('admin', 'seller'), productController.uploadProductImages, productController.resizeProductImages, productController.createProduct);
 router.route('/:id').get(productController.getProduct).patch(authController.protect, authController.restrictTo('admin', 'seller'), productController.uploadProductImages, productController.resizeProductImages, productController.updateProduct).delete(authController.protect, authController.restrictTo('admin', 'seller'), productController.deleteProduct);
 

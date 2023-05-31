@@ -68,6 +68,19 @@ exports.getProduct = catchAsync(async (req, res, next) => {
     })
 })
 
+exports.getProductBySlug = catchAsync(async (req, res, next) => {
+    const product = await Product.findOne({ slug: req.params.slug });
+
+    if (!product) return next(new AppError("The product couldn't be found!", 404));
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            product
+        }
+    })
+})
+
 exports.createProduct = catchAsync(async (req, res, next) => {
 
     if (!req.body.createdBy) req.body.createdBy = req.user.id;
