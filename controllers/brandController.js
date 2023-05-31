@@ -64,6 +64,19 @@ exports.getBrand = catchAsync(async (req, res, next) => {
     })
 })
 
+exports.getBrandBySlug = catchAsync(async (req, res, next) => {
+    const brand = await Brand.findOne({ slug: req.params.slug });
+
+    if (!brand) return next(new AppError("The brand couldn't be found!", 404));
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            brand
+        }
+    })
+})
+
 exports.createBrand = catchAsync(async (req, res, next) => {
     if (!req.body.createdBy) req.body.createdBy = req.user.id;
     const newBrand = await Brand.create({ ...req.body, photo: req.file.filename });
