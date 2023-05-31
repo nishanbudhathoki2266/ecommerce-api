@@ -81,7 +81,7 @@ productSchema.virtual('reviews', {
 })
 
 productSchema.pre('save', async function (next) {
-    let createdSlug = slugify(this.name, { lower: true });
+    const createdSlug = slugify(this.name, { lower: true });
     this.slug = await this.constructor.findOne({ slug: createdSlug }) ? slugify(`${this.name} ${this.createdBy} ${Date.now()}`, { lower: true }) :
         createdSlug;
     next();
