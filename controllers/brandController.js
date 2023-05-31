@@ -54,7 +54,7 @@ exports.getAllBrands = catchAsync(async (req, res, next) => {
 exports.getBrand = catchAsync(async (req, res, next) => {
     const brand = await Brand.findById(req.params.id);
 
-    if (!brand) return next(new AppError("No brand found with that ID!, 404"));
+    if (!brand) return next(new AppError("No brand found with that ID!", 404));
 
     res.status(200).json({
         status: 'success',
@@ -80,7 +80,7 @@ exports.updateBrand = catchAsync(async (req, res, next) => {
     const requestBody = req.file ? { ...req.body, photo: req.file.filename } : req.body;
     const brand = await Brand.findByIdAndUpdate(req.params.id, requestBody, { new: true, runValidators: true });
 
-    if (!brand) return next(new AppError("No brand found with that ID!, 404"));
+    if (!brand) return next(new AppError("No brand found with that ID!", 404));
 
     res.status(200).json({
         status: 'success',
@@ -93,7 +93,7 @@ exports.updateBrand = catchAsync(async (req, res, next) => {
 exports.delteBrand = catchAsync(async (req, res, next) => {
     const brand = await Brand.findByIdAndDelete(req.params.id);
 
-    if (!brand) return next(new AppError("No brand found with that ID!, 404"));
+    if (!brand) return next(new AppError("No brand found with that ID!", 404));
 
     res.status(204).json({
         status: 'success',
